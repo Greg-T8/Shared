@@ -19,6 +19,8 @@
     This technique is particularly useful for creating reusable function factories where you want to
 #>
 
+test
+
 function Logger {
     [OutputType([ScriptBlock])]
     param (
