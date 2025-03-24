@@ -27,7 +27,7 @@ $Main = {
 
     # Initialize logging, one function for normal logging, one for exceptions
     $logHeaders = 'User', 'Property', 'Value', 'Message'
-    $function:Log = Logger -LogName UserUpdate -Headers $logHeaders -LogType Information
+    $function:Log = Logger -LogName UserUpdate -Headers $logHeaders -LogType Output
 
     $logHeaders =  'Action', 'Message'
     $function:LogEx = Logger -LogName UserUpdateException -Headers $logHeaders -LogType Exception
@@ -52,7 +52,7 @@ function Logger {
 
     # Set up a Write-Host function based on the log type, but do not call it yet.
     switch ($LogType) {
-        'Information' { $writeHost = { param($Message) Write-Host -Message $Message -ForegroundColor Gray } }
+        'Output' { $writeHost = { param($Message) Write-Host -Message $Message -ForegroundColor Gray } }
         'Exception' { $writeHost = { param($Message) Write-Host -Message $Message -ForegroundColor Yellow } }
     }
 
@@ -69,7 +69,8 @@ function Logger {
         if (-not (Test-Path -Path $logFile)) { $Headers -join ',' | Out-File -FilePath $logFile }
         [PSCustomObject]$LogObject | Export-Csv -Path $logFile -Append -Force -NoTypeInformation
 
-    }.GetNewClosure()
+    }.GetNewClosure() # Allows inner function to use variables from outer function, i.e. $Headers, $logFile, $writeHost
+
 }
 
 & $Main
