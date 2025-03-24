@@ -19,7 +19,7 @@
 
 .PARAMETER LogType
     When using the Logger function, this parameter defines the type of log which affects the console output color.
-    Valid values are 'Output' (Gray), 'Exception' (Yellow), and 'Information' (default).
+    Valid values are 'Output' (Gray) and 'Exception' (Yellow).
 
 .EXAMPLE
     $function:Log = Logger -LogName "UserActivity" -Headers @('User', 'Action', 'Time') -LogType Output
