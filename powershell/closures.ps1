@@ -11,6 +11,32 @@
     from its parent scope (like $LogFile, $Headers, etc.) so they remain available when the returned scriptblock
     is executed elsewhere. This allows for creating customized logging functions with pre-configured settings.
 
+.PARAMETER LogName
+    When using the Logger function, this parameter defines the base name for the log file.
+
+.PARAMETER Headers
+    When using the Logger function, this parameter defines the column headers for the CSV log file.
+
+.PARAMETER LogType
+    When using the Logger function, this parameter defines the type of log which affects the console output color.
+    Valid values are 'Output' (Gray), 'Exception' (Yellow), and 'Information' (default).
+
+.EXAMPLE
+    $function:Log = Logger -LogName "UserActivity" -Headers @('User', 'Action', 'Time') -LogType Output
+    Log @{ User = 'jane'; Action = 'Login'; Time = Get-Date }
+
+    Creates a logging function that writes to a CSV file with the specified headers and displays output in gray.
+
+.EXAMPLE
+    $function:ErrorLog = Logger -LogName "ErrorReports" -Headers @('Error', 'Module', 'Message') -LogType Exception
+    ErrorLog @{ Error = 'ConnectionFailed'; Module = 'Network'; Message = 'Could not connect to server' }
+
+    Creates an error logging function that writes to a CSV file and displays output in yellow.
+
+.OUTPUTS
+    Each logging function creates a timestamped CSV file in the script's directory and writes log entries to both
+    the console and the CSV file.
+
 .NOTES
     This technique is particularly useful for creating reusable function factories where you want to
     pre-configure some behavior but retain flexibility in how the generated functions are used.
