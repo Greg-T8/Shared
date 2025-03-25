@@ -23,15 +23,17 @@
 
 .EXAMPLE
     $function:Log = Logger -LogName "UserActivity" -Headers @('User', 'Action', 'Time') -LogType Output
+
     Log @{ User = 'jane'; Action = 'Login'; Time = Get-Date }
 
-    Creates a logging function that writes to a CSV file with the specified headers and displays output in gray.
+    Creates a logging function `Log` that writes to a CSV file and displays output in gray.
 
 .EXAMPLE
-    $function:ErrorLog = Logger -LogName "ErrorReports" -Headers @('Error', 'Module', 'Message') -LogType Exception
-    ErrorLog @{ Error = 'ConnectionFailed'; Module = 'Network'; Message = 'Could not connect to server' }
+    $function:LogError = Logger -LogName "ErrorReports" -Headers @('Error', 'Module', 'Message') -LogType Exception
 
-    Creates an error logging function that writes to a CSV file and displays output in yellow.
+    LogError @{ Error = 'ConnectionFailed'; Module = 'Network'; Message = 'Could not connect to server' }
+
+    Creates a logging function `LogError` that writes to a CSV file and displays output in yellow.
 
 .OUTPUTS
     Each logging function creates a timestamped CSV file in the script's directory and writes log entries to both
@@ -43,10 +45,6 @@
 
     Without GetNewClosure(), the variables defined in the parent scope ($logFile, $Headers, etc.)
     would be lost when the returned scriptblock is executed, resulting in undefined variables.
-
-    In this example, we create two distinct logging functions with different configurations
-    from a single Logger factory function, demonstrating the power of closures for creating
-    specialized behavior.
 #>
 
 $Main = {
